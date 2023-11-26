@@ -31,7 +31,11 @@ The train file contains instances where the company actually mailed out advertor
 This file is very similar to the train except the "RESPONSE" column is left out, we will use our model to fill in these responses and submit to [this kaggle competition](https://www.kaggle.com/competitions/udacity-arvato-identify-customers/overview).
 
 ### Initial Exploration
-There are many features in this data set, one of the ones I thought might be reprasentative is LP_LEBENSPHASE_FEIN (lifestage fine ) & LP_LEBENSPHASE_GROB (lifestage rough). Below is a histogram of these values for the population at large vs customers.
+There are many features in this data set, one of the ones I thought might be representative is LP_LEBENSPHASE_FEIN (lifestage fine), LP_LEBENSPHASE_GROB (lifestage rough), LP_STATUS_FEIN (lifestyle fine) & ANREDE_KZ (sex). Below are several histograms between the observed customer base and the general population.
+![lifestage fine](visualizations/lifestyle-fine.png)
+![lifestage rough](visualizations/lifestyle-rough.png)
+![social status fine](visualizations/social-status-fine.png)
+![sex](visualizations/sex.png)
 
 
 
