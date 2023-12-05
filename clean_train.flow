@@ -3,7 +3,7 @@
     "version": 1,
     "disable_limits": false,
     "instance_type": "ml.m5.4xlarge",
-    "disable_validation": false
+    "disable_validation": true
   },
   "parameters": [],
   "nodes": [
