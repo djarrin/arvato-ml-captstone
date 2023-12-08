@@ -18,7 +18,7 @@ def train():
     # predictor = TabularPredictor(label="RESPONSE", verbosity=4, sample_weight='RECORD_WEIGHT', weight_evaluation=True).fit(
     predictor = TabularPredictor(path=model_directory, label="RESPONSE", verbosity=4, sample_weight='RECORD_WEIGHT', weight_evaluation=True).fit(
         train_data=train_data,
-        time_limit=10,
+        time_limit=600,
         presets="best_quality"
     )
 
