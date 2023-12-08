@@ -1,16 +1,14 @@
-import argparse
+import pandas as pd
+import os
 from autogluon.tabular import TabularPredictor
 
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--train', type=str, required=True, help='Training data location (S3 URI)')
-    return parser.parse_args()
-
 def train():
-    args = parse_args()
+    train_data_path = os.environ['SM_CHANNEL_TRAIN']
+    print("Path attempting to load data from", train_data_path)
 
-    # Load training data
-    train_data = TabularPredictor.load_pd(args.train)
+     # Load training data
+    all_files = [os.path.join(train_data_path, file) for file in os.listdir(train_data_path) if file.endswith('.csv')]
+    train_data = pd.concat([pd.read_csv(file) for file in all_files], ignore_index=True)
 
     # Create a TabularPredictor instance and train the model
     predictor = TabularPredictor(label="RESPONSE", verbosity=4, sample_weight='RECORD_WEIGHT', weight_evaluation=True, eval_metric='log_loss').fit(
