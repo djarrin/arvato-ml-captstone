@@ -5,6 +5,12 @@ In this project the primary objective was to take in a training data set with ma
 ## Project Objective
 As mentioned above the goal of this project was to come up with a model that could predict if a perspective customer will convert into becoming a paying customer. To make this determination a raw dataset was provided that had several hundred demographic features (who's meaning are described in the DIAS Attribute file) and a label column (the RESPONSE column).
 
+## Project Data
+### train.csv
+The train file contains instances where the company actually mailed out advertorials. Many of the same demographic columns as the other files but includes a "RESPONSE" column that indicates which of these customers actually purchased.
+### Dias Attributes - Values 2017.xlsx & DIAS Information Levels - Attributes 2017.xlsx
+These files give descriptions of each of the features I used to train the models.
+
 ## Evaluation Metric
 This project originally came from this [Kaggle Compilation](https://www.kaggle.com/competitions/udacity-arvato-identify-customers/overview) and the metric for success for this compilation is [AUC ROC score](https://towardsdatascience.com/understanding-auc-roc-curve-68b2303cc9c5). AUC ROC score is a better evaluation metric than accuracy alone because as I learned in this project with a heavily unbalanced dataset you can have a near 100% accuracy score (because one of the labels is represented far less than the others) but still have a poorly performing model.
 AUC ROC has a score from 0 to 1 with 0 being a poorly performing model, 1 being a perfectly performing model and a 0.5 indicating the model is not able to distinguish between the labels in the dataset. I was originally planning on making submissions to the Kaggle competition but the compilation was closed so instead I will split the train data into a training dataset and an evaluation dataset and evaluate the model on the evaluation dataset (and generate aan auc_roc score from this).
@@ -69,7 +75,7 @@ In order to refine the dataset provided I made the decision to make use of Sagem
 8. This all concluded with an export to an s3 csv file.
 ![Data Wrangler Processing Jobs](visualizations/data-processing-jobs.png)
 
-** One note if you check the notebook I did do some extra encoding and dropping of na columns after the processing times because data wrangler was having some issues and was becoming too expensive for this projects budget.
+** One note if you check the notebook I did do some extra encoding and dropping of na columns after the processing because data wrangler was having some issues and was becoming too expensive for this projects budget.
 
 ## Initial Hypothesis 
 My initial hypothesis going into this project was that I would use the log_loss evaluation metric for training as it was surmised that this would account for an Unbalanced data set. I also thought that using [sklearn.feature_selection.SelectPercentile ](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectPercentile.html#sklearn.feature_selection.SelectPercentile) would be useful in pruning features that were not relevant to the classification problem. 
@@ -120,5 +126,15 @@ Lastly I just wanted to demonstrate that I could deploy an TabularPredictor mode
 I think there is some room for improvement, specifically in the data processing steps. If given another opportunity I may run through the data wrangler step again and not prune as many columns as was done initially, I surmise that I may have ended up pruning data that had a more key relationship to the target than I had initially thought. I might also take another look at the data type transforms that were done.
 
 ## Justification
-In the end a model with an auc_roc score 0.63 does offer some insight into which customers would become paying customers and those who would not (well above 0.5 and closer to 1 than 0). As an initial MVP I feel this result is an adequate solution to the problem. 
+In the end a model with an auc_roc score 0.63 (at one point having a score as high as 0.67) does offer some insight into which customers would become paying customers and those who would not (well above 0.5 and closer to 1 than 0). As an initial MVP I feel this result is an adequate solution to the problem. 
 
+## Citations
+### AUC ROC Score Explanation
+[https://towardsdatascience.com/understanding-auc-roc-curve-68b2303cc9c5](https://towardsdatascience.com/understanding-auc-roc-curve-68b2303cc9c5)
+
+### Kaggle Competition
+[https://www.kaggle.com/competitions/udacity-arvato-identify-customers/overview](https://www.kaggle.com/competitions/udacity-arvato-identify-customers/overview)
+### Model Deployment
+[https://docs.aws.amazon.com/sagemaker/latest/dg/autogluon-tabular.html](https://docs.aws.amazon.com/sagemaker/latest/dg/autogluon-tabular.html)
+
+[https://github.com/aws/amazon-sagemaker-examples/blob/main/introduction_to_amazon_algorithms/autogluon_tabular/Amazon_Tabular_Classification_AutoGluon.ipynb](https://github.com/aws/amazon-sagemaker-examples/blob/main/introduction_to_amazon_algorithms/autogluon_tabular/Amazon_Tabular_Classification_AutoGluon.ipynb)
