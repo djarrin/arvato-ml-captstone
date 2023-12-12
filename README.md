@@ -76,7 +76,7 @@ predictor = TabularPredictor(label="RESPONSE", sample_weight='RECORD_WEIGHT', we
 ```
 The initial benchmark AUC ROC was 0.53815 which is well above 0 but does signify that the model has a lot of trouble distinguishing between the two labels.
 
-## Data Processing 
+## Data Processing
 In order to refine the dataset provided I made the decision to make use of Sagemaker Data Wranger. This process consisted of uploading the data into Data Wrangler via a CSV import from an S3 bucket then making several transforms to the data so as to make it easier to feed into TabularPredictor.
 
 ![Data Wrangler Flow](visualizations/datawrangler-flow.png)
@@ -89,12 +89,12 @@ In order to refine the dataset provided I made the decision to make use of Sagem
 6. Next I filled in na feature values with the median value of the other records of that feature.
 7. Lastly I one hot encoded all the remaining string features as they would not otherwise be useful during the training process.
 8. This all concluded with an export to an s3 csv file.
-![Data Wrangler Processing Jobs](visualizations/data-processing-jobs.png)
+   ![Data Wrangler Processing Jobs](visualizations/data-processing-jobs.png)
 
 ** One note if you check the notebook I did do some extra encoding and dropping of na columns after the processing because data wrangler was having some issues and was becoming too expensive for this projects budget.
 
-## Initial Hypothesis 
-My initial hypothesis going into this project was that I would use the log_loss evaluation metric for training as it was surmised that this would account for an Unbalanced data set. I also thought that using [sklearn.feature_selection.SelectPercentile ](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectPercentile.html#sklearn.feature_selection.SelectPercentile) would be useful in pruning features that were not relevant to the classification problem. 
+## Initial Hypothesis
+My initial hypothesis going into this project was that I would use the log_loss evaluation metric for training as it was surmised that this would account for an Unbalanced data set. I also thought that using [sklearn.feature_selection.SelectPercentile ](https://scikit-learn.org/stable/modules/generated/sklearn.feature_selection.SelectPercentile.html#sklearn.feature_selection.SelectPercentile) would be useful in pruning features that were not relevant to the classification problem.
 
 ## Model Tweaking and Evaluation
 ### Feature Selection Trainings
@@ -131,6 +131,7 @@ and obtained an auc_roc score from this method.
 
 ### Results
 ![Model Evaluation](visualizations/model_evaluation.png)
+
 Based on the evaluations conducted it appeared that my hypothesis were incorrect (at least for how the data was formatted). The more features with an equal label weighting resulted a higher probablity that the model would be able to distinguish between a customer who would purchase and one who would not.
 
 #### Model Optimization
@@ -154,7 +155,7 @@ Lastly I just wanted to demonstrate that I could deploy an TabularPredictor mode
 I think there is some room for improvement, specifically in the data processing steps. If given another opportunity I may run through the data wrangler step again and not prune as many columns as was done initially, I surmise that I may have ended up pruning data that had a more key relationship to the target than I had initially thought. I might also take another look at the data type transforms that were done.
 
 ## Justification
-In the end a model with an auc_roc score 0.70 does offer some insight into which customers would become paying customers and those who would not (well above 0.5 and closer to 1 than 0). As an initial MVP I feel this result is an adequate solution to the problem. 
+In the end a model with an auc_roc score 0.70 does offer some insight into which customers would become paying customers and those who would not (well above 0.5 and closer to 1 than 0). As an initial MVP I feel this result is an adequate solution to the problem.
 
 ## Citations
 ### AUC ROC Score Explanation

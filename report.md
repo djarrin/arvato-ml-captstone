@@ -115,6 +115,7 @@ and obtained an auc_roc score from this method.
 
 ### Results
 ![Model Evaluation](visualizations/model_evaluation.png)
+
 Based on the evaluations conducted it appeared that my hypothesis were incorrect (at least for how the data was formatted). The more features with an equal label weighting resulted a higher probablity that the model would be able to distinguish between a customer who would purchase and one who would not.
 
 #### Model Optimization
