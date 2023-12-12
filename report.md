@@ -117,6 +117,18 @@ and obtained an auc_roc score from this method.
 ![Model Evaluation](visualizations/model_evaluation.png)
 Based on the evaluations conducted it appeared that my hypothesis were incorrect (at least for how the data was formatted). The more features with an equal label weighting resulted a higher probablity that the model would be able to distinguish between a customer who would purchase and one who would not.
 
+#### Model Optimization
+After finding the best model training method I did use the [calibrate_decision_threshold](https://auto.gluon.ai/stable/api/autogluon.tabular.TabularPredictor.calibrate_decision_threshold.html) method to try to improve the ROC AUC score. ROC AUC is not a metric that can be optimized (and thus did not change) so I optomized on various metrics such as f1, this did improve accuracy signifigantly going from 0.50691 to 0.6651 when evaluacted against the test set. Below is the method I used to do this optimization:
+```
+new_threshold = predictor_clean.calibrate_decision_threshold(
+    data=clean_valid_data,
+    metric="f1"
+)
+
+predictor_clean.set_decision_threshold(new_threshold)
+```
+![Model Optimization](visualizations/model_optimization_accuracy.png)
+
 ## Model Deployment
 Lastly I just wanted to demonstrate that I could deploy an TabularPredictor model to an inference endpoint as this was not something done in the class materials and did not seem trivial.
 ![Deployed Model](visualizations/deployed-model.png)
@@ -126,7 +138,7 @@ Lastly I just wanted to demonstrate that I could deploy an TabularPredictor mode
 I think there is some room for improvement, specifically in the data processing steps. If given another opportunity I may run through the data wrangler step again and not prune as many columns as was done initially, I surmise that I may have ended up pruning data that had a more key relationship to the target than I had initially thought. I might also take another look at the data type transforms that were done.
 
 ## Justification
-In the end a model with an auc_roc score 0.63 (at one point having a score as high as 0.67) does offer some insight into which customers would become paying customers and those who would not (well above 0.5 and closer to 1 than 0). As an initial MVP I feel this result is an adequate solution to the problem. 
+In the end a model with an auc_roc score 0.70 does offer some insight into which customers would become paying customers and those who would not (well above 0.5 and closer to 1 than 0). As an initial MVP I feel this result is an adequate solution to the problem. 
 
 ## Citations
 ### AUC ROC Score Explanation
